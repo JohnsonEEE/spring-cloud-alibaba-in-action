@@ -1,0 +1,17 @@
+1，config变更是如何通知的
+	【LongPollingRunnable，一直轮询请求config服务，等待config服务变更参数的数据返回，并设置了45秒readtimeout】
+2，注册中心注册过程
+	【NacosNamingService】
+3，ribbon从获取注册中心server list过程
+	【nacos提供了一个NacosServerList，是ribbon AbstractServerList的实现，ribbon就从这里定时获取server list】
+4，健康检查机制，heartbeat？
+	【configService，也通过LongPollingRunnable是否报错来决定的】
+	【namingServer，BeatReactor】
+5，初始的config和serverlist是如何注入进来的
+	【@Value】
+6，消息更新，通知过来后，是如何将新的config设置到environment上的
+	【NacosPropertySourceLocator】
+7，服务如何自动发现
+	【HostReactor中addTask，用线程不断定时更新】
+8，消费者有自动清理dead provider的机制吗
+	【也是HostReactor中addTask，用线程不断定时更新】

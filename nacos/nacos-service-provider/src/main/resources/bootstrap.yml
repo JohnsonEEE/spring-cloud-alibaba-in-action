@@ -1,0 +1,8 @@
+nacos-server-addr: localhost:8848
+
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: ${nacos-server-addr}
+        prefix: default
