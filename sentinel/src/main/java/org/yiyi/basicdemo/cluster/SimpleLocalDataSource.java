@@ -31,29 +31,39 @@
  *
  * Copyright version 2.0
  */
-package org.yiyi.controller;
+package org.yiyi.basicdemo.cluster;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.csp.sentinel.datasource.AbstractDataSource;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+
+import java.util.List;
 
 /**
  * @author yi.yi
- * @date 2021.09.16
+ * @date 2021.10.01
  */
-@RestController
-@RefreshScope
-public class EchoController {
-    @Value("${myname}")
-    private String myname;
-    @Value("${nickname}")
-    private String nickname;
+public class SimpleLocalDataSource extends AbstractDataSource <String, List <FlowRule>> {
 
-    @RequestMapping(value = "/echo")
-    public String echo (@RequestParam String echo) {
-        String msg = "Hello " + myname + "(" + nickname + "): " + echo;
-        return msg;
+    public SimpleLocalDataSource (String namespace) {
+        super (new SimpleConverter ());
+        new Thread (() -> {
+            try {
+                Thread.sleep (6000L);
+                getProperty ().updateValue (loadConfig ());
+            }
+            catch (Exception e) {
+                e.printStackTrace ();
+            }
+        }).start ();
+    }
+
+    @Override
+    public String readSource () throws Exception {
+        return "";
+    }
+
+    @Override
+    public void close () throws Exception {
+
     }
 }

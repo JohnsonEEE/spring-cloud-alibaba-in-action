@@ -31,29 +31,43 @@
  *
  * Copyright version 2.0
  */
-package org.yiyi.controller;
+package org.yiyi.basicdemo.customize;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.csp.sentinel.context.Context;
+import com.alibaba.csp.sentinel.node.DefaultNode;
+import com.alibaba.csp.sentinel.slotchain.AbstractLinkedProcessorSlot;
+import com.alibaba.csp.sentinel.slotchain.ResourceWrapper;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.spi.Spi;
+
+import java.util.Random;
 
 /**
  * @author yi.yi
- * @date 2021.09.16
+ * @date 2021.10.11
  */
-@RestController
-@RefreshScope
-public class EchoController {
-    @Value("${myname}")
-    private String myname;
-    @Value("${nickname}")
-    private String nickname;
+@Spi(value = "errorSometimes", order = 100)
+public class ErrorSometimesSlot extends AbstractLinkedProcessorSlot <DefaultNode> {
 
-    @RequestMapping(value = "/echo")
-    public String echo (@RequestParam String echo) {
-        String msg = "Hello " + myname + "(" + nickname + "): " + echo;
-        return msg;
+
+    @Override
+    public void entry(Context context, ResourceWrapper resourceWrapper, DefaultNode node, int count, boolean prioritized, Object... args)
+            throws Throwable {
+//        Random r = new Random ();
+//        boolean error = r.nextBoolean ();
+//        if (error) {
+//            System.out.println ("this time error happens");
+//            throw new BlockException (context.getOrigin(), "this time error happens") {
+//
+//            };
+//        }
+//        System.out.println ("this time error not happens");
+        fireEntry(context, resourceWrapper, node, count, prioritized, args);
     }
+
+    @Override
+    public void exit (Context context, ResourceWrapper resourceWrapper, int count, Object... args) {
+        fireExit(context, resourceWrapper, count, args);
+    }
+
 }

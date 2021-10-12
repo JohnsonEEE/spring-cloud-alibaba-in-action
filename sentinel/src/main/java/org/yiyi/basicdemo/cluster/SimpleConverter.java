@@ -31,29 +31,36 @@
  *
  * Copyright version 2.0
  */
-package org.yiyi.controller;
+package org.yiyi.basicdemo.cluster;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.csp.sentinel.datasource.Converter;
+import com.alibaba.csp.sentinel.slots.block.ClusterRuleConstant;
+import com.alibaba.csp.sentinel.slots.block.flow.ClusterFlowConfig;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import org.yiyi.basicdemo.ClusterFlowRuleDemo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yi.yi
- * @date 2021.09.16
+ * @date 2021.10.01
  */
-@RestController
-@RefreshScope
-public class EchoController {
-    @Value("${myname}")
-    private String myname;
-    @Value("${nickname}")
-    private String nickname;
+public class SimpleConverter implements Converter <String, List <FlowRule>> {
 
-    @RequestMapping(value = "/echo")
-    public String echo (@RequestParam String echo) {
-        String msg = "Hello " + myname + "(" + nickname + "): " + echo;
-        return msg;
+    @Override
+    public List <FlowRule> convert (String source) {
+        List<FlowRule> flowRules = new ArrayList <> ();
+        FlowRule flowRule = new FlowRule();
+        flowRule.setCount(15);
+        flowRule.setResource(ClusterFlowRuleDemo.RESOURCE);
+        // 集群限流配置
+        flowRule.setClusterMode(true);
+        ClusterFlowConfig clusterFlowConfig = new ClusterFlowConfig();
+        clusterFlowConfig.setFlowId(10000L); // id 确保全局唯一
+        clusterFlowConfig.setThresholdType (ClusterRuleConstant.FLOW_THRESHOLD_GLOBAL);
+        flowRule.setClusterConfig(clusterFlowConfig);
+        flowRules.add(flowRule);
+        return flowRules;
     }
 }

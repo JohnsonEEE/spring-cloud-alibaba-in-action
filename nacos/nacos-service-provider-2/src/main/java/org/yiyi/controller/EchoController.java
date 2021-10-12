@@ -33,7 +33,6 @@
  */
 package org.yiyi.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,14 +45,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RefreshScope
 public class EchoController {
-    @Value("${myname}")
-    private String myname;
-    @Value("${nickname}")
-    private String nickname;
 
     @RequestMapping(value = "/echo")
     public String echo (@RequestParam String echo) {
-        String msg = "Hello " + myname + "(" + nickname + "): " + echo;
+        String msg = "Hello " + echo;
         return msg;
     }
 }

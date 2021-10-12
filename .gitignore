@@ -1,0 +1,4 @@
+/sentinel-dashboard.jar
+*.class
+*/target
+*.iml

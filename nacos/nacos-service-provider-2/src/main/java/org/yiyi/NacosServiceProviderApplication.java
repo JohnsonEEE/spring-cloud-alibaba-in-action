@@ -31,29 +31,20 @@
  *
  * Copyright version 2.0
  */
-package org.yiyi.controller;
+package org.yiyi;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author yi.yi
  * @date 2021.09.16
  */
-@RestController
-@RefreshScope
-public class EchoController {
-    @Value("${myname}")
-    private String myname;
-    @Value("${nickname}")
-    private String nickname;
-
-    @RequestMapping(value = "/echo")
-    public String echo (@RequestParam String echo) {
-        String msg = "Hello " + myname + "(" + nickname + "): " + echo;
-        return msg;
+@SpringBootApplication
+@EnableDiscoveryClient
+public class NacosServiceProviderApplication {
+    public static void main (String[] args) {
+        SpringApplication.run (NacosServiceProviderApplication.class, args);
     }
 }

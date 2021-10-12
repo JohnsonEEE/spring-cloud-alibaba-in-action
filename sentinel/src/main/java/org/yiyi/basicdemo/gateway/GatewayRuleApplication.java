@@ -31,37 +31,18 @@
  *
  * Copyright version 2.0
  */
-package org.yiyi.service;
+package org.yiyi.basicdemo.gateway;
 
-import com.alibaba.nacos.api.annotation.NacosInjected;
-import com.alibaba.nacos.api.config.ConfigService;
-import com.alibaba.nacos.api.config.listener.Listener;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
-
-import java.util.concurrent.Executor;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author yi.yi
- * @date 2021.09.16
+ * @date 2021.10.09
  */
-@Component
-public class NacosConfigService implements InitializingBean {
-    @NacosInjected
-    private ConfigService configService;
-
-    @Override
-    public void afterPropertiesSet () throws Exception {
-//        configService.addListener("nacos-provider", "DEFAULT_GROUP", new Listener () {
-//            @Override
-//            public void receiveConfigInfo(String configInfo) {
-//                System.out.println("recieve1:" + configInfo);
-//            }
-//            @Override
-//            public Executor getExecutor() {
-//                return null;
-//            }
-//        });
-
+@SpringBootApplication
+public class GatewayRuleApplication {
+    public static void main (String[] args) {
+        SpringApplication.run (GatewayRuleApplication.class, args);
     }
 }
