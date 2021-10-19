@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yiyi.seata.mapper.OrderMapper">
+
+    <insert id="createOrder">
+        insert into orders (account_no, create_date) values (
+            #{accountNo,jdbcType=VARCHAR},
+            #{createDate,jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>
